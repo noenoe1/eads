@@ -22,24 +22,40 @@
     <div class="site-section">
       <div class="container">
         <div class="row">
+          <div class="col-lg-12">
+            <!-- Grid row -->
+        <?php if ( isset( $item )): ?>
+        <div class="gallery" id="gallery" style="margin-left: 15px; margin-bottom: 15px;">
+          <?php
+              $conds = array( 'img_type' => 'item', 'img_parent_id' => $item->id );
+              $images = $this->Image->get_all_by( $conds )->result();
+          ?>
+          <?php $i = 0; foreach ( $images as $img ) :?>
+            <!-- Grid column -->
+            <div class="mb-3 pics animation all 2">
+              <a href="#<?php echo $i;?>"><img class="img-fluid" src="<?php echo img_url('/' . $img->img_path); ?>" alt="Card image cap"></a>
+            </div>
+            <!-- Grid column -->
+          <?php $i++; endforeach; ?>
+
+          <?php $i = 0; foreach ( $images as $img ) :?>
+            <a href="#_1" class="lightbox trans" id="<?php echo $i?>"><img src="<?php echo img_url('/' . $img->img_path); ?>"></a>
+          <?php $i++; endforeach; ?>
+        </div>
+        <?php endif; ?>
+        <!-- Grid row -->
+
+          </div>
           <div class="col-lg-8">
             <div class="alert alert-success" style="display: none;"></div>
-            <div class="mb-4">
-              <div class="slide-one-item home-slider owl-carousel">
-
-                <?php
-
-                  $conds = array( 'img_type' => 'item', 'img_parent_id' => $item->id );
-                  
-                  $images = $this->Image->get_all_by( $conds )->result();
-
-                ?>
-                <div><img src="<?php echo $this->ps_image->upload_url . $images[0]->img_path; ?>" alt="Image" class="img-fluid"></div>
-              </div>
-            </div>
             
             <h4 class="h5 mb-4 text-black">Description</h4>
             <p><?php echo $item->description; ?></p>
+            <h4 class="h5 mb-4 text-black">Highlighted Information</h4>
+            <p><?php echo $item->highlight_info; ?></p>
+            <h4 class="h5 mb-4 text-black">Deal Option : <?php echo $this->Option->get_one($item->deal_option_id)->name; ?></h4>
+             <h4 class="h5 mb-4 text-black">Brand : <?php echo $item->brand; ?></h4>
+            <?php if ( isset( $logged_in_user->user_id )){ ?>
             <div class='starrr' id='star1'></div>
             <div>&nbsp;
               <span class='your-choice-was' style='display: none;'>
@@ -52,8 +68,27 @@
             </div>
             <input type="hidden" name="item_id" id="item_id" value="<?php echo $item->id; ?>">
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $logged_in_user->user_id; ?>">
+            <input type="hidden" name="to_user_id" id="to_user_id" value="<?php echo $item->added_user_id; ?>">
+            <?php } ?>
           </div>
 
+          <div class="col-lg-4 ml-auto">
+            <h4 class="h5 mb-4 text-black">Address</h4>
+            <h3 class="h5 mb-4 text-black"><?php echo $item->address; ?></h3>
+            <?php if (  $item->lat !='0' && $item->lng !='0' ):?>
+          
+            <div id="itm_location" style="width: 100%; height: 250px;"></div>
+            <div class="clearfix">&nbsp;</div>
+          
+            <?php endif ?>
+           
+                <h4 class="h5 mb-4 text-black">Category : <?php echo $this->Category->get_one($item->cat_id)->cat_name; ?></h4>
+                <h4 class="h5 mb-4 text-black">Sub Category : <?php echo $this->Subcategory->get_one($item->sub_cat_id)->name; ?></h4>
+                <h4 class="h5 mb-4 text-black">Price : <?php echo $item->price . $this->Currency->get_one($item->item_currency_id)->currency_symbol; ?></h4>
+                <h4 class="h5 mb-4 text-black">For : <?php echo $this->Itemtype->get_one($item->item_type_id)->name; ?></h4>
+                <h4 class="h5 mb-4 text-black">Item Condition : <?php echo $this->Condition->get_one($item->condition_of_item_id)->name; ?></h4>
+              
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +100,6 @@
       var obj = {};
       obj.item_id = $('#item_id').val();
       obj.user_id = $('#user_id').val();
-      alert(obj);
       $.ajax({
           type: 'POST',
           url: '<?php echo site_url() . '/guestajax/add_favourite_items';?>',
@@ -86,6 +120,30 @@
     //rating star
     $('#star1').starrr({
       change: function(e, value){
+        var obj = {};
+        obj.rating = value;
+        obj.from_user_id = $('#user_id').val();
+        obj.to_user_id = $('#to_user_id').val();
+        $.ajax({
+          type: 'POST',
+          url: '<?php echo site_url() . '/guestajax/add_rating';?>',
+          data: obj,
+          dataType:'json',
+          success:function(resp){
+              alert(resp.data);
+              if ( resp.status == 'success' ) {
+                  $('.alert-success').show();
+                  $( '.alert-success' ).html( "<strong>Success!</strong> Rating." );
+                  if (value) {
+                    $('.your-choice-was').show();
+                    $('.choice').text(value);
+                  }
+
+              } else {
+                  console.log( resp );
+              }
+          }
+      });
         if (value) {
           $('.your-choice-was').show();
           $('.choice').text(value);

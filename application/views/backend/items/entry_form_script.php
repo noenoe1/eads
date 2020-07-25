@@ -83,7 +83,7 @@
 						$('#sub_cat_id').trigger('change');
 					}
 				});
-			});
+		});
         
 		 $(function() {
 			var selectedClass = "";

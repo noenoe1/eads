@@ -125,7 +125,14 @@ class Item extends PS_Model {
 
 		// condition_of_item id condition
 		if ( isset( $conds['condition_of_item_id'] )) {
-			$this->db->where( 'condition_of_item_id', $conds['condition_of_item_id'] );
+			
+			if ($conds['condition_of_item_id'] != "") {
+				if($conds['condition_of_item_id'] != '0'){
+				
+					$this->db->where( 'condition_of_item_id', $conds['condition_of_item_id'] );	
+				}
+
+			}			
 		}
 
 		// description condition

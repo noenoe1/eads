@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="<?php echo base_url( 'assets/frontend/css/rangeslider.css' ); ?>">
 
     <link rel="stylesheet" href="<?php echo base_url( 'assets/frontend/css/style.css' ); ?>">
+    <!-- gallery lightbox -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/gallery/gallery.css'); ?>">
+    <script src="<?php echo base_url('assets/plugins/gallery/gallery.js');?>"></script>
     
   </head>
 <body>
@@ -48,6 +51,7 @@
 
                   <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
                     <li class="active"><a href="<?php echo site_url().'/home'; ?>">Home</a></li>
+                    <li><a href="<?php echo site_url().'/advancedsearch'; ?>">Advanced Search</a></li>
                     <li><a href="<?php echo site_url().'/blog'; ?>">Blog</a></li>
                     <li><a href="<?php echo site_url().'/contact'; ?>">Contact</a></li>
 

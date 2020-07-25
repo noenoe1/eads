@@ -137,10 +137,14 @@ class Home extends FE_Controller
 					}
 				}
 			}
-		}
 
-		// load login form 
-		$this->load_template( 'login' );
+			$this->load_template( 'home' );
+			header("Refresh:0");
+		} else {
+			// load login form 
+			$this->load_template( 'login' );
+		}
+		
 	}
 
 	/**
@@ -817,6 +821,112 @@ class Home extends FE_Controller
 	function userprofile() {
 		// profile 
 		$this->load_template( 'profile' );
+	}
+
+	/**
+	* Advanced Search Page
+	*/
+	function advancedsearch($page=1) {
+		// condition with search term
+		if($this->input->post('submit') != NULL ){
+			if ($this->get_data( 'title' ) != '') {
+				$conds['title'] = $this->get_data( 'title' );
+				$this->session->set_userdata(array("title" => $this->input->post('title')));
+				$this->data['item_title'] = $this->session->userdata('title');
+			}
+		
+			if ($this->get_data('item_location_id') != '' || $this->get_data('item_location_id') != '0') {
+				$conds['item_location_id'] = $this->get_data('item_location_id');
+				$this->session->set_userdata(array("item_location_id" => $this->input->post('item_location_id')));
+				$this->data['item_location_id'] = $this->session->userdata('item_location_id');
+			}
+			
+			if ($this->get_data('cat_id') != '' || $this->get_data('cat_id') != '0') {
+				$conds['cat_id'] = $this->get_data('cat_id');
+				$this->session->set_userdata(array("cat_id" => $this->input->post('cat_id')));
+				$this->data['cat_id'] = $this->session->userdata('cat_id');
+			}
+
+			if ($this->get_data('sub_cat_id') != '' || $this->get_data('sub_cat_id') != '0') {
+				$conds['sub_cat_id'] = $this->get_data('sub_cat_id');
+				$this->session->set_userdata(array("sub_cat_id" => $this->input->post('sub_cat_id')));
+				$this->data['sub_cat_id'] = $this->session->userdata('sub_cat_id');
+			}
+
+			if ($this->get_data('item_type_id') != '' || $this->get_data('item_type_id') != '0') {
+				$conds['item_type_id'] = $this->get_data('item_type_id');
+				$this->session->set_userdata(array("item_type_id" => $this->input->post('item_type_id')));
+				$this->data['item_type_id'] = $this->session->userdata('item_type_id');
+			}
+
+			if ($this->get_data('condition_of_item_id') != '' || $this->get_data('condition_of_item_id') != '0') {
+				$conds['condition_of_item_id'] = $this->get_data('condition_of_item_id');
+				$this->session->set_userdata(array("condition_of_item_id" => $this->input->post('condition_of_item_id')));
+				$this->data['condition_of_item_id'] = $this->session->userdata('condition_of_item_id');
+			}
+
+			if ($this->get_data( 'price' ) != '') {
+				$conds['price'] = $this->get_data( 'price' );
+				$this->session->set_userdata(array("price" => $this->input->post('price')));
+				$this->data['price'] = $this->session->userdata('price');
+			}
+			// print_r($conds);die;
+			// search data
+			$total = $this->Item->count_all_by( $conds );
+		 	$pag = $this->config->item( 'item_display_limit' );
+		 	$noofpage = ceil($total/$pag);
+		 	$conds['status'] = 1;
+		 	$offset = (($page-1)*$pag);
+		 	$limit = $pag;
+		 	$this->data['current'] = $page;
+			$this->data['noofpage'] =$noofpage;
+			$this->data['items'] = $this->Item->get_all_by( $conds, $limit, $offset );
+		
+		} else {
+			//read from session value
+			if($this->session->userdata('title') != NULL){
+				$conds['title'] = $this->session->userdata('title');
+				$this->data['item_title'] = $this->session->userdata('title');
+			}
+
+			if($this->session->userdata('item_location_id') != NULL){
+				$conds['item_location_id'] = $this->session->userdata('item_location_id');
+				$this->data['item_location_id'] = $this->session->userdata('item_location_id');
+			}
+
+			if($this->session->userdata('cat_id') != NULL){
+				$conds['cat_id'] = $this->session->userdata('cat_id');
+				$this->data['cat_id'] = $this->session->userdata('cat_id');
+			}
+
+			if($this->session->userdata('sub_cat_id') != NULL){
+				$conds['sub_cat_id'] = $this->session->userdata('sub_cat_id');
+				$this->data['sub_cat_id'] = $this->session->userdata('sub_cat_id');
+			}
+
+			if($this->session->userdata('item_type_id') != NULL){
+				$conds['item_type_id'] = $this->session->userdata('item_type_id');
+				$this->data['item_type_id'] = $this->session->userdata('item_type_id');
+			}
+
+			if($this->session->userdata('condition_of_item_id') != NULL){
+				$conds['condition_of_item_id'] = $this->session->userdata('condition_of_item_id');
+				$this->data['condition_of_item_id'] = $this->session->userdata('condition_of_item_id');
+			}
+			// search data
+			// $total = $this->Item->count_all_by( $conds );
+		 // 	$pag = $this->config->item( 'item_display_limit' );
+		 // 	$noofpage = ceil($total/$pag);
+		 // 	$conds['status'] = 1;
+		 // 	$offset = (($page-1)*$pag);
+		 // 	$limit = $pag;
+		 // 	$this->data['current'] = $page;
+			// $this->data['noofpage'] =$noofpage;
+			// $this->data['items'] = $this->Item->get_all_by( $conds, $limit, $offset );
+
+		}
+		
+		$this->load_template( 'advanced_search' );
 	}
 
 	
