@@ -826,7 +826,11 @@ class Home extends FE_Controller
 	/**
 	* Advanced Search Page
 	*/
-	function advancedsearch($page=1) {
+	function advancedsearch( ) {
+		$this->load_template( 'advanced_search' );
+	}
+
+	function advancedresult($page=1) {
 		// condition with search term
 		if($this->input->post('submit') != NULL ){
 			if ($this->get_data( 'title' ) != '') {
@@ -870,6 +874,13 @@ class Home extends FE_Controller
 				$this->session->set_userdata(array("price" => $this->input->post('price')));
 				$this->data['price'] = $this->session->userdata('price');
 			}
+
+			if ($this->get_data( 'price_status' ) != '') {
+				$conds['price_status'] = $this->get_data( 'price_status' );
+				$this->session->set_userdata(array("price_status" => $this->input->post('price_status')));
+				$this->data['price_status'] = $this->session->userdata('price_status');
+			}
+
 			// print_r($conds);die;
 			// search data
 			$total = $this->Item->count_all_by( $conds );
@@ -913,16 +924,28 @@ class Home extends FE_Controller
 				$conds['condition_of_item_id'] = $this->session->userdata('condition_of_item_id');
 				$this->data['condition_of_item_id'] = $this->session->userdata('condition_of_item_id');
 			}
+
+			if ($this->session->userdata('price') != NULL) {
+				$conds['price'] = $this->get_data( 'price' );
+				$this->session->set_userdata(array("price" => $this->input->post('price')));
+				$this->data['price'] = $this->session->userdata('price');
+			}
+
+			if ($this->session->userdata('price_status') != NULL) {
+				$conds['price_status'] = $this->session->userdata('price_status');
+				$this->data['price_status'] = $this->session->userdata('price_status');
+			}
+			// print_r($conds);die;
 			// search data
-			// $total = $this->Item->count_all_by( $conds );
-		 // 	$pag = $this->config->item( 'item_display_limit' );
-		 // 	$noofpage = ceil($total/$pag);
-		 // 	$conds['status'] = 1;
-		 // 	$offset = (($page-1)*$pag);
-		 // 	$limit = $pag;
-		 // 	$this->data['current'] = $page;
-			// $this->data['noofpage'] =$noofpage;
-			// $this->data['items'] = $this->Item->get_all_by( $conds, $limit, $offset );
+			$total = $this->Item->count_all_by( $conds );
+		 	$pag = $this->config->item( 'item_display_limit' );
+		 	$noofpage = ceil($total/$pag);
+		 	$conds['status'] = 1;
+		 	$offset = (($page-1)*$pag);
+		 	$limit = $pag;
+		 	$this->data['current'] = $page;
+			$this->data['noofpage'] =$noofpage;
+			$this->data['items'] = $this->Item->get_all_by( $conds, $limit, $offset );
 
 		}
 		
