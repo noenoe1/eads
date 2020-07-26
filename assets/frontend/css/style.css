@@ -1862,3 +1862,7 @@ column-width: 100%;
     border-left: 1px solid #e7eaec;
     border-right: 1px solid #e7eaec;
 }
+
+.checked {
+  color: orange;
+}
