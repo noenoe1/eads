@@ -48,7 +48,7 @@
           </div>
           <div class="col-lg-8">
             <div class="alert alert-success" style="display: none;"></div>
-            
+            <h4 class="h5 mb-4 text-black"><?php echo $item->title; ?></h4>
             <h4 class="h5 mb-4 text-black">Description</h4>
             <p><?php echo $item->description; ?></p>
             <h4 class="h5 mb-4 text-black">Highlighted Information</h4>
@@ -74,7 +74,7 @@
 
           <div class="col-lg-4 ml-auto">
             <h4 class="h5 mb-4 text-black">Address</h4>
-            <h3 class="h5 mb-4 text-black"><?php echo $item->address; ?></h3>
+            <p><?php echo $item->address; ?></p>
             <?php if (  $item->lat !='0' && $item->lng !='0' ):?>
           
             <div id="itm_location" style="width: 100%; height: 250px;"></div>
@@ -82,11 +82,54 @@
           
             <?php endif ?>
            
-                <h4 class="h5 mb-4 text-black">Category : <?php echo $this->Category->get_one($item->cat_id)->cat_name; ?></h4>
+                <h4 class="h5 mb-4 text-black">Category : 
+
+                    <?php echo $this->Category->get_one($item->cat_id)->cat_name; ?> 
+                  
+                </h4>
+                
                 <h4 class="h5 mb-4 text-black">Sub Category : <?php echo $this->Subcategory->get_one($item->sub_cat_id)->name; ?></h4>
                 <h4 class="h5 mb-4 text-black">Price : <?php echo $item->price . $this->Currency->get_one($item->item_currency_id)->currency_symbol; ?></h4>
                 <h4 class="h5 mb-4 text-black">For : <?php echo $this->Itemtype->get_one($item->item_type_id)->name; ?></h4>
                 <h4 class="h5 mb-4 text-black">Item Condition : <?php echo $this->Condition->get_one($item->condition_of_item_id)->name; ?></h4>
+                
+                <h4 class="h5 mb-4 text-black">Ratings : 
+                
+                  <?php
+                  //Rating Calculation Here 
+                  
+                  $conds['to_user_id'] = $item->added_user_id;
+                  
+                  //$ratings = $this->get_room_ratings( $room_id );
+                  $ratings = $this->Rate->get_all_by( $conds )->result();
+
+                  $rating_count_value = count($ratings); 
+                  $rating_total_value = 0;
+                  foreach ( $ratings as $rat ) {
+                  // loop each rating and get total
+                    $rating_total_value += $rat->rating;
+                  }
+                  $final_rating =  $rating_total_value/$rating_count_value;
+
+
+
+                  ?>
+                
+                  <?php
+                  
+                  for($i=1; $i<=5;$i++) {
+                    if($i < $final_rating) {
+                      echo "<span class='fa fa-star checked'></span>";
+                    } else {
+                      echo "<span class='fa fa-star'></span>";
+                    }
+
+                  }
+                  ?>
+                  
+                
+                </h4>
+
               
           </div>
         </div>
