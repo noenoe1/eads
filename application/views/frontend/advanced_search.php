@@ -15,7 +15,7 @@
         <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
           <?php
             $attributes = array( 'id' => 'advanced-form', 'enctype' => 'multipart/form-data');
-            echo form_open( site_url('advancedsearch'), $attributes);
+            echo form_open( site_url('advancedresult'), $attributes);
           ?>
             <div class="row align-items-center">
               <div class="col-lg-12 mb-4 mb-xl-0 col-xl-4">
@@ -220,7 +220,7 @@
                 </a>
               <?php } ?> 
               <?php if( $noofpage > $current ) { ?>
-                <a href="<?php echo site_url('/advancedsearch/'.($current+1)) ?>">
+                <a href="<?php echo site_url('/advancedresult/'.($current+1)) ?>">
                   
                   <span class="fa fa-caret-right" style="color: red;font-size: 50px;margin-top: -5px;"></span>
 

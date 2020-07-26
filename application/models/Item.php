@@ -190,6 +190,20 @@ class Item extends PS_Model {
 
 		}
 
+		if( $conds['price_status'] == '1' ) {
+			if( $conds['price'] != 0 ) {
+				$this->db->where( 'price', $conds['price'] );
+			}
+		} else if( $conds['price_status'] == '2' ) {
+			if( $conds['price'] != 0 ) {
+				$this->db->where( 'price <=', $conds['price'] );
+			}
+		} else if ( $conds['price_status'] == '3') {
+			if( $conds['price'] != 0 ) {
+				$this->db->where( 'price >=', $conds['price'] );
+			}
+		}
+
 		
 	}
 
