@@ -361,7 +361,6 @@ class Home extends FE_Controller
 				$this->session->set_userdata(array("title" => $this->input->post('title')));
 				$this->data['item_title'] = $this->session->userdata('title');
 			}
-		
 			if ($this->get_data('item_location_id') != '' || $this->get_data('item_location_id') != '0') {
 				$conds['item_location_id'] = $this->get_data('item_location_id');
 				$this->session->set_userdata(array("item_location_id" => $this->input->post('item_location_id')));

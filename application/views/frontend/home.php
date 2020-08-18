@@ -28,7 +28,7 @@
               <div class="col-lg-12 mb-4 mb-xl-0 col-xl-3">
                   <div class="select-wrap">
                   <span class="icon"><span class="icon-keyboard_arrow_down"></span></span>
-                  <select class="form-control rounded" name="" id="">
+                  <select class="form-control rounded" name="item_location_id" id="item_location_id">
                     <option value="0">Load all locations</option>
                     <?php
                       $locations = $this->Itemlocation->get_all( )->result();

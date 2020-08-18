@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>EAds &mdash; Colorlib Website Template</title>
+    <title>EAds </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
@@ -44,7 +44,7 @@
             <div class="row align-items-center">
               
               <div class="col-6 col-xl-2">
-                <h1 class="mb-0 site-logo"><a href="index.html" class="text-black mb-0">E<span class="text-primary">Ads</span>  </a></h1>
+                <h1 class="mb-0 site-logo"><a href="<?php echo site_url().'/home'; ?>" class="text-black mb-0">E<span class="text-primary">Ads</span>  </a></h1>
               </div>
               <div class="col-12 col-md-10 d-none d-xl-block">
                 <nav class="site-navigation position-relative text-right" role="navigation">

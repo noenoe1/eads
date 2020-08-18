@@ -90,20 +90,54 @@
               <div class="col-lg-4">
                 
                 <div class="d-block d-md-flex listing vertical">
-                  <a href="#" class="img d-block" style="background-image: url(<?php echo $this->ps_image->upload_url .'/'. $images[0]->img_path;?>);"></a>
+                  <a href="<?php echo site_url().'/listing_single/'.$itm->id; ?>" class="img d-block" style="background-image: url(<?php echo $this->ps_image->upload_url .'/'. $images[0]->img_path;?>);"></a>
                   <div class="lh-content">
                     <span class="category"><?php echo $this->Category->get_one($itm->cat_id)->cat_name; ?></span>
                     <a href="#" class="bookmark"><span class="icon-heart"></span></a>
-                    <h3><a href="#"><?php echo $itm->title; ?></a></h3>
+                    <h3><a href="<?php echo site_url().'/listing_single/'.$itm->id; ?>"><?php echo $itm->title; ?></a></h3>
                     <address><?php echo $itm->address; ?></address>
-                    <p class="mb-0">
-                      <span class="icon-star text-warning"></span>
-                      <span class="icon-star text-warning"></span>
-                      <span class="icon-star text-warning"></span>
-                      <span class="icon-star text-warning"></span>
-                      <span class="icon-star text-secondary"></span>
-                      <span class="review">(3 Reviews)</span>
+                    
+                     <?php
+                    //Rating Calculation Here 
+                    
+                    $conds['to_user_id'] = $itm->added_user_id;
+                    
+                    //$ratings = $this->get_room_ratings( $room_id );
+                    $ratings = $this->Rate->get_all_by( $conds )->result();
+
+                    $rating_count_value = count($ratings); 
+                    $rating_total_value = 0;
+                    foreach ( $ratings as $rat ) {
+                    // loop each rating and get total
+                      $rating_total_value += $rat->rating;
+                    }
+                    $final_rating =  $rating_total_value/$rating_count_value;
+
+
+
+                    ?>
+
+                    <p>
+
+                      <?php
+
+                        //$star_counter = $rating_count_value;
+
+                        for($i=1; $i<=5;$i++) {
+                          //echo $i ." - ". $final_rating;
+                          if($i < $final_rating) {
+                            echo "<span class='fa fa-star checked'></span>";
+                          } else {
+                            echo "<span class='fa fa-star'></span>";
+                          }
+
+                        }
+                        
+                      ?>
+
                     </p>
+
+
                   </div>
                 </div>
 
